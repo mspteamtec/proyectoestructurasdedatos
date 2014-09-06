@@ -6,7 +6,7 @@ using namespace std;
 
 /************************************************************************/
 
-//Estructura de la lista Carrera simple
+//Estructura de la lista Carrera Simple
 struct Carreras
 {
     string carrera; // La variable para guardar el nombre de la Carrera
@@ -16,7 +16,7 @@ struct Carreras
 
 /************************************************************************/
 
-//Estructura de la Lista Cursos doble
+//Estructura de la Lista Cursos Doble
 struct Cursos
 {
     string codigo;// La variable para guardar el codigo
@@ -31,13 +31,23 @@ struct Cursos
 
 /************************************************************************/
 
+// Estructura de la Lista Aulas o Lab Circular
+struct Aulas
+{
+    struct Aulas *sig;// Puntero siguiente
+    int codigo; // La variable que guarda el codigo del lab o aula etc
+    string espacio;//La variable que guarda el espacio Ej: aula lab piscina miniauditorio
+}ListaAulas;//La variable global para guardar las Aulas
+
+/************************************************************************/
+
 //Estructura de la Lista Profesor simple
 struct Profesor
 {
     string nombre;// La variable para guardar el nombre del Profesor
     string restriccion;// La variable para guardar las restricciones del Profesor
     struct Profesor *sig;// Puntero siguiente
-}ListaProfesor;
+}ListaProfesor;// La variable global para guardar los Profesores
 
 
 /************************************************************************/
@@ -48,6 +58,6 @@ struct Profesor
 
 int main()
 {
-    cout << "Cristian Playo" << endl;
+    cout << "Menú en proceso" << endl;
     return 0;
 }
