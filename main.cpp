@@ -7,12 +7,15 @@ using namespace std;
 /************************************************************************/
 
 //Estructura de la lista Carrera Simple
-struct Carreras
+struct Carrera
 {
     string carrera; // La variable para guardar el nombre de la Carrera
-    struct Carreras *sig; //Puntero al siguiente nodo de la lista
+    struct Carrera *sig; //Puntero al siguiente nodo de la lista
     struct Cursos *PrimeroCurso;//Puntero que enlaza con Curso
-}ListaCarreras;//La variable global para guardar las Carreras
+
+};
+typedef struct Carrera *TCarreras;
+
 
 /************************************************************************/
 
@@ -52,12 +55,63 @@ struct Profesor
 
 /************************************************************************/
 
+void InsertarFinalCarrera(TCarreras &listaCarrera, string carrera)
+{
+    TCarreras temp, nuevo;// Se declara el temp y nuevo
+    nuevo = new Carrera();// Creamos memoria
 
+    nuevo->carrera = carrera;//Le damos el nombre
+    nuevo->sig = NULL;//Le declaramos el puntero a NULL
+
+    if(listaCarrera == NULL)
+    {
+        listaCarrera = nuevo;
+    }
+    else
+    {
+        temp = listaCarrera;
+        while(temp->sig != NULL)//Recorremos la lista hasta el ultimo nodo
+        {
+            temp = temp->sig;
+        }
+        temp->sig = nuevo;
+    }
+}
+
+/************************************************************************/
+
+//Metodo para imprimir todos los elementos de una lista simple de Carrera
+void ImprimirListaCarrera(TCarreras &listaCarrera)
+{
+    TCarreras temp = listaCarrera;
+    while(temp != NULL) //Se recorren todos los nodos de conforman la lista
+    {
+        if(temp->sig != NULL)
+        {
+            cout << temp->carrera << "->"; //Se imprimen los nombres de la lista en pantalla, excepto el ùltimo
+        }
+        else // Es el ultimo
+        {
+            cout << temp->carrera << "->NULL"; //Se imprime el último valor del nodo de la lista
+        }
+
+        temp = temp->sig; //Se continua con el recorrido de la lista por medio del puntero temporal
+    }
+}
+
+/************************************************************************/
 
 
 
 int main()
 {
-    cout << "Menú en proceso" << endl;
+    TCarreras listaCarrera = NULL;
+    ImprimirListaCarrera(listaCarrera);
+    InsertarFinalCarrera(listaCarrera, "Computacion");
+    InsertarFinalCarrera(listaCarrera, "Agronomia");
+    InsertarFinalCarrera(listaCarrera, "Produccion Indistrial");
+    InsertarFinalCarrera(listaCarrera, "Electronica");
+    ImprimirListaCarrera(listaCarrera);
+    cout << "" << endl;
     return 0;
 }
