@@ -40,7 +40,8 @@ struct Aulas
     struct Aulas *sig;// Puntero siguiente
     int codigo; // La variable que guarda el codigo del lab o aula etc
     string espacio;//La variable que guarda el espacio Ej: aula lab piscina miniauditorio
-}ListaAulas;//La variable global para guardar las Aulas
+}//La variable global para guardar las Aulas
+typedef struct Aulas *TAulas;
 
 /************************************************************************/
 
@@ -101,8 +102,87 @@ void ImprimirListaCarrera(TCarreras &listaCarrera)
 
 /************************************************************************/
 
+void insertarAula(TAulas &listaAulas, int codigo, int espacio)
+{
+    TAulas nuevo;
+    nuevo = new nodo();
+    nuevo->codigo = codigo;
+    nuevo->sig = NULL;
+    nuevo->espacio = espacio;
 
 
+    if(listaAulas == NULL)
+    {
+        listaAulas = nuevo;
+    }
+    else if(listaAulas->codigo > nuevo->codigo)
+    {
+        nuevo->sig = lista ;
+        lista = nuevo;
+    }
+    else if (lista->sig == NULL)
+    {
+        lista->sig = nuevo;
+
+    }
+    else
+    {
+        TAulas temp, prox;
+        temp = lista;
+        prox = temp;
+
+        while(temp != NULL)
+        {
+            if(temp->sig == NULL)
+            {
+                temp->sig = nuevo;
+
+                temp = nuevo->sig;
+            }
+            else if(temp->codigo <= nuevo->codigo && temp->sig != NULL)
+            {
+                prox = temp->sig;
+                if(prox->codigo > nuevo->codigo)
+                {
+                    nuevo->sig = prox;
+
+                    temp->sig = nuevo;
+
+                    break;
+
+                }
+                else{
+                    temp = prox;
+                }
+
+            }
+
+        }
+    }
+
+}
+void ImprimirListaAulas(TAulas &listaAulas)
+{
+    if(listaAulas != NULL)
+    {
+        TAulas temp = listaAulas;
+        while(temp->sig != listaAulas) //Se recorren todos los nodos de conforman la lista
+        {
+            if(temp->sig != listaAulas)
+            {
+                cout << temp->codigo temp->espacio << "->"; //Se imprimen los valores de la lista en pantalla, excepto el ùltimo
+            }
+
+            temp = temp->sig; //Se continua con el recorrido de la lista por medio del puntero temporal
+        }
+
+        cout << temp->codigo temp->espacio << "->AL INICIO"; //Se imprime el último valor del nodo de la lista
+    }
+    else
+    {
+        cout << "Lista vacia...";
+    }
+}
 int main()
 {
     TCarreras listaCarrera = NULL;
