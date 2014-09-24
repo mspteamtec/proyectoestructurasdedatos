@@ -281,10 +281,40 @@ void ImprimirCursos(string carrera)
         }
 }
 void Menu(){
-cout<<"Opciones"<<"\n";
-
-
+string opcion;
+cout<<"Seleccione una opción"<<"\n";
+cout<<"1-Insertar Carrera"<<"\n";
+cout<<"2-Modificar Carrera"<<"\n";
+cout<<"3-Eliminar Carrera"<<"\n";
+cin >>opcion;
+if(opcion=="1"){
+    string carrerainsertar;
+    cout<<"Ingrese la carrera que desea insertar";
+    cin >>carrerainsertar;
+    InsertarFinalCarrera(carrerainsertar);
 }
+
+else if(opcion=="2"){
+    string carreramodificar;
+    string nuevacarrera;
+    cout<<"Ingrese la carrera que desea modificar";
+    cin >>carreramodificar;
+    cout<<"Ingrese el nuevo nombre de la carrera";
+    cin >>nuevacarrera;
+}
+else if(opcion=="3")
+{
+    string carreraeliminar;
+    cout <<"Ingrese la carrera que desea eliminar";
+    cin>>carreraeliminar;
+    EliminarCarrera(carreraeliminar);
+}
+else{
+    cout<<"La opcion es invalida";
+}
+}
+
+
 
 
 /************************************************************************/
@@ -329,7 +359,7 @@ int main()
     InsertarCurso("Computacion", "CA2", "SistemasO", 50, 3, "Ninguna", "K 12:30-14:15", "Vera  ");
 
 
-    ImprimirCursos("Computacion");
+    //ImprimirCursos("Computacion");
 
 
     return 0;
