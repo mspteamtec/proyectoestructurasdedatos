@@ -29,8 +29,8 @@ struct Cursos
     string restriccion;// La variable para guardar las restricciones
     string horario;// La variable para guardar el horario del Curso
     struct Cursos *sig, *ant;// Los punteros antes y siguiente
-    struct Profesor *PrimeroProfesor;// Puntero que enlaza con Profesor
-}ListaCursos;// La variable global para guardar los Cursos
+    struct profesor;// Puntero que enlaza con Profesor
+};
 
 /************************************************************************/
 
@@ -40,7 +40,7 @@ struct Aulas
     struct Aulas *sig;// Puntero siguiente
     int codigo; // La variable que guarda el codigo del lab o aula etc
     string espacio;//La variable que guarda el espacio Ej: aula lab piscina miniauditorio
-}//La variable global para guardar las Aulas
+};//La variable global para guardar las Aulas
 typedef struct Aulas *TAulas;
 
 /************************************************************************/
@@ -105,7 +105,7 @@ void ImprimirListaCarrera(TCarreras &listaCarrera)
 void insertarAula(TAulas &listaAulas, int codigo, int espacio)
 {
     TAulas nuevo;
-    nuevo = new nodo();
+    nuevo = new Aulas();
     nuevo->codigo = codigo;
     nuevo->sig = NULL;
     nuevo->espacio = espacio;
@@ -117,18 +117,18 @@ void insertarAula(TAulas &listaAulas, int codigo, int espacio)
     }
     else if(listaAulas->codigo > nuevo->codigo)
     {
-        nuevo->sig = lista ;
-        lista = nuevo;
+        nuevo->sig = listaAulas;
+        listaAulas = nuevo;
     }
-    else if (lista->sig == NULL)
+    else if (listaAulas->sig == NULL)
     {
-        lista->sig = nuevo;
+        listaAulas->sig = nuevo;
 
     }
     else
     {
         TAulas temp, prox;
-        temp = lista;
+        temp = listaAulas;
         prox = temp;
 
         while(temp != NULL)
@@ -161,28 +161,43 @@ void insertarAula(TAulas &listaAulas, int codigo, int espacio)
     }
 
 }
+
+/************************************************************************/
+
 void ImprimirListaAulas(TAulas &listaAulas)
 {
     if(listaAulas != NULL)
     {
-        TAulas temp = listaAulas;
+        TAulas temp;
+        temp = listaAulas;
         while(temp->sig != listaAulas) //Se recorren todos los nodos de conforman la lista
         {
             if(temp->sig != listaAulas)
             {
-                cout << temp->codigo temp->espacio << "->"; //Se imprimen los valores de la lista en pantalla, excepto el ùltimo
+                cout << temp->codigo <<","<< temp->espacio << "->"; //Se imprimen los valores de la lista en pantalla, excepto el ùltimo
             }
 
             temp = temp->sig; //Se continua con el recorrido de la lista por medio del puntero temporal
         }
 
-        cout << temp->codigo temp->espacio << "->AL INICIO"; //Se imprime el último valor del nodo de la lista
+        cout << temp->codigo <<","<< temp->espacio << "->AL INICIO"; //Se imprime el último valor del nodo de la lista
     }
     else
     {
         cout << "Lista vacia...";
     }
 }
+
+/************************************************************************/
+
+//Funcion para insertar los cursos de la carrera en una lista doble
+void InsertaCurso(TCarreras &PrimeroCurso, string, carrera ,string codigo, string materia, int grupo, int credito, string horario, string profesor, string restriccion)
+{
+    TCarreras temp;
+    temp = listaCarrera;
+}
+/************************************************************************/
+
 int main()
 {
     TCarreras listaCarrera = NULL;

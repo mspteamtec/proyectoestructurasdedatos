@@ -159,7 +159,7 @@ void ImprimirCarrera()
             }
             else // Es el ultimo
             {
-                cout << temp->carrera << "->NULL\n"; //Se imprime el último valor del nodo de la lista
+                cout << temp->carrera << "->NULL\n\n"; //Se imprime el último valor del nodo de la lista
             }
 
             temp = temp->sig; //Se continua con el recorrido de la lista por medio del puntero temporal
@@ -168,8 +168,29 @@ void ImprimirCarrera()
     }
     else
     {
-        cout<<"No hay carrerar registradas";
+        cout<<"No hay carrerar registradas\n\n";
     }
+}
+
+/************************************************************************/
+bool comparadorDeStrings(string codigo1, string codigo2)
+{
+    if (codigo1.compare(codigo2)!=0)
+    {
+        if(codigo1.compare(codigo2)>0)
+        {
+                return (false);
+        }
+        else
+        {
+            return(true);
+        }
+    }
+    else
+    {
+        return (true);
+    }
+
 }
 
 /************************************************************************/
@@ -181,63 +202,51 @@ void InsertarCurso(string carrera, string codigo, string materia, int grupo, int
 
     if((tempC!=NULL))
     {
-        struct Cursos *nuevo= new Cursos();
-        nuevo->codigo=codigo;
-        nuevo->creditos=creditos;
-        nuevo->grupo=grupo;
-        nuevo->horario=horario;
-        nuevo->materia=materia;
-        nuevo->restriccion=restricciones;
-        nuevo->profesor=profesor;
-        nuevo->sig=NULL;
-        nuevo->ant=NULL;
+        struct Cursos *nn= new Cursos();
+        nn->codigo=codigo;
+        nn->creditos=creditos;
+        nn->grupo=grupo;
+        nn->horario=horario;
+        nn->materia=materia;
+        nn->restriccion=restricciones;
+        nn->profesor=profesor;
+        nn->sig=NULL;
+        nn->ant=NULL;
+
         if(tempC->PrimeroCurso == NULL)
-        {
-            tempC->PrimeroCurso=nuevo;
-        }
-        else if(nuevo->codigo < tempC->PrimeroCurso->codigo)
-        {
-            nuevo->sig = tempC->PrimeroCurso;
-            tempC->PrimeroCurso->ant = nuevo;
-            tempC->PrimeroCurso = nuevo;
-        }
-        else if(tempC->PrimeroCurso->sig == NULL)
-        {
-            nuevo->ant = tempC->PrimeroCurso;
-            tempC->PrimeroCurso->sig = nuevo;
-        }
+            {
+                tempC->PrimeroCurso = nn;
+                tempC->PrimeroCurso->sig=NULL;
+                tempC->PrimeroCurso->ant = NULL;
+            }
         else
         {
-            struct Cursos *temp, *ant;
-            temp = tempC->PrimeroCurso;
-            ant = temp;
-            while( ant != NULL)
-            {
-                if( ant->sig == NULL)
-                {
-                    ant->sig = nuevo;
-                    nuevo->ant = temp;
-                    ant = nuevo->sig;
-                }
-                else if (ant->codigo <= nuevo->codigo  && ant->sig !=NULL)
-                {
-                    temp = ant->sig;
-                    if (nuevo->codigo < temp->codigo)
-                    {
-                        nuevo->sig = temp;
-                        temp->ant = nuevo;
-                        ant->sig = nuevo;
-                        nuevo->ant = ant;
-                        break;
-                    }
-                }
+            struct Cursos* temp = tempC->PrimeroCurso;
+            for(;(comparadorDeStrings((temp->codigo),(codigo))==true)&&(temp->sig!=NULL);temp = temp->sig);
 
-                else
-                {
-                    ant = temp;
+            if((comparadorDeStrings((tempC->PrimeroCurso->codigo),(codigo))==false))
+                {//inserta al inicio
+                    nn->sig = temp;
+                    //nn->ant = temp->ant;
+                    temp->ant=nn; //duda
+                    temp->sig=NULL;
+                    tempC->PrimeroCurso = nn;
                 }
-            }
+            if(comparadorDeStrings((codigo),(temp->codigo))==true)
+                {//si es menor
+                    temp->ant->sig=nn;
+                    nn->sig = temp;
+                    nn->ant = temp->ant;
+                    temp->ant=nn;
+                }
+                    else{// es mayor que todos los que estan en la lista y lo inserta al final
+                            temp->sig = nn;
+                            nn->ant = temp;
+                        }
         }
+        return;
+
+
     }
 
 }
@@ -280,38 +289,73 @@ void ImprimirCursos(string carrera)
             cout<< "La Carrera no tiene cursos registrados";
         }
 }
-void Menu(){
+
+/***********************************************************************/
+
+void MenuCarrera(){
 string opcion;
-cout<<"Seleccione una opción"<<"\n";
+cout<<"-----Seleccione una opcion-----"<<"\n";
 cout<<"1-Insertar Carrera"<<"\n";
 cout<<"2-Modificar Carrera"<<"\n";
 cout<<"3-Eliminar Carrera"<<"\n";
+cout<<"4-Ver las Carreras"<<"\n";
+cout<<"5-Menu Principal"<<"\n";
 cin >>opcion;
 if(opcion=="1"){
     string carrerainsertar;
-    cout<<"Ingrese la carrera que desea insertar";
+    cout<<"Ingrese la carrera que desea insertar:  ";
     cin >>carrerainsertar;
     InsertarFinalCarrera(carrerainsertar);
+    MenuCarrera();
 }
 
 else if(opcion=="2"){
     string carreramodificar;
     string nuevacarrera;
-    cout<<"Ingrese la carrera que desea modificar";
+    cout<<"Ingrese la carrera que desea modificar:  ";
     cin >>carreramodificar;
-    cout<<"Ingrese el nuevo nombre de la carrera";
+    cout<<"Ingrese el nuevo nombre de la carrera:  ";
     cin >>nuevacarrera;
+    ModificarCarrera(carreramodificar, nuevacarrera);
+    MenuCarrera();
 }
 else if(opcion=="3")
 {
     string carreraeliminar;
-    cout <<"Ingrese la carrera que desea eliminar";
+    cout <<"Ingrese la carrera que desea eliminar:  ";
     cin>>carreraeliminar;
     EliminarCarrera(carreraeliminar);
+    MenuCarrera();
 }
+else if(opcion=="4")
+{
+    ImprimirCarrera();
+    MenuCarrera();
+}
+/*else if(opcion=="5")
+{
+    MenuPrincipal1();
+}*/
 else{
     cout<<"La opcion es invalida";
 }
+}
+
+/************************************************************************/
+void MenuPrincipal()
+{
+    string opcion;
+    cout<<"-----Seleccione una opcion-----"<<"\n";
+    cout<<"1-Menu de Carreras"<<"\n";
+    cout<<"2-Menu de Cursos"<<"\n";
+    cout<<"3-Menu de Aulas"<<"\n";
+    cout<<"4-Salir"<<"\n";
+    cin >>opcion;
+
+    if (opcion =="1")
+    {
+        MenuCarrera();
+    }
 }
 
 
@@ -322,8 +366,9 @@ else{
 
 int main()
 {
-    Menu();
+    InsertarFinalCarrera( "Produccion Indistrial");
     InsertarFinalCarrera("Computacion");
+    MenuPrincipal();
     /*InsertarFinalCarrera("Agronomia");
     InsertarFinalCarrera( "Produccion Indistrial");
     InsertarFinalCarrera("Electronica");
@@ -353,10 +398,13 @@ int main()
     ImprimirCarrera();*/
 
 
-    InsertarCurso("Computacion", "CA4", "Elementos", 50, 3, "Ninguna", "K 12:30-14:15", "Marlen");
-    InsertarCurso("Computacion", "CA4", "Fundament", 50, 3, "Ninguna", "K 12:30-14:15", "Huber ");
-    InsertarCurso("Computacion", "CA3", "Arquitect", 50, 3, "Ninguna", "K 12:30-14:15", "Jorge ");
-    InsertarCurso("Computacion", "CA2", "SistemasO", 50, 3, "Ninguna", "K 12:30-14:15", "Vera  ");
+    /*InsertarCurso("Computacion", "CA2125", "Elementos", 50, 3, "Ninguna", "K 12:30-14:15", "Marlen");
+    InsertarCurso("Computacion", "IC3101", "Arquitect", 50, 4, "Ninguna", "K 12:30-16:50", "Jorge ");
+    InsertarCurso("Computacion", "IC1802", "Introduci", 50, 3, "Ninguna", "K 7:55-9:40  ", "Vera  ");
+    InsertarCurso("Computacion", "IC2001", "Estructur", 50, 4, "Ninguna", "K 7:55-11:30 ", "Lorena");
+    InsertarCurso("Computacion", "IC1400", "Fundament", 50, 3, "Ninguna", "K 12:30-16:50", "Vera  ");
+    InsertarCurso("Computacion", "IC1803", "TallerDeP", 50, 3, "Ninguna", "L 7:00-8:45  ", "Efren ");
+    InsertarCurso("Computacion", "IC3002", "AnalisisA", 50, 4, "Ninguna", "K 12:30-16:50", "Lorena");*/
 
 
     //ImprimirCursos("Computacion");
